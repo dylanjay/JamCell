@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Telekinesis : MonoBehaviour {
 
@@ -10,6 +11,8 @@ public class Telekinesis : MonoBehaviour {
     float perc;
     Transform startPos;
     bool holding;
+    List<Transform> objectList;
+    Material diffuse;
 
     // Use this for initialization
 	void Start () {
@@ -17,7 +20,13 @@ public class Telekinesis : MonoBehaviour {
         currentLerpTime = 0f;
         pull = false;
         holding = false;
-	}
+        objectList = new List<Transform>();
+
+        GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        primitive.SetActive(false);
+        diffuse = primitive.GetComponent<MeshRenderer>().sharedMaterial;
+        DestroyImmediate(primitive);
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -28,17 +37,23 @@ public class Telekinesis : MonoBehaviour {
         {
             currentLerpTime += Time.deltaTime;
         }
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        
+        for(int i = 0; i < objectList.Count; i++)
         {
-            currentLerpTime = 0f;
-            if(Physics.SphereCast(cam.position, 3, cam.forward, out hit, 500))
+            objectList[i].GetComponent<Renderer>().material = diffuse;
+        }
+        objectList.Clear();
+
+        if (Physics.SphereCast(cam.position - cam.forward, 3, cam.forward, out hit, 20) && !pull && !holding)
+        {
+            if (hit.transform.gameObject.GetComponent("TelikineticObject"))
             {
-                //Destroy(hit.transform.gameObject);
-                GameObject target = hit.transform.gameObject;
-                moveTarget = target;
-                if(target.GetComponent("TelikineticObject"))
+                hit.transform.GetComponent<Renderer>().material = Resources.Load("outlineMat", typeof(Material)) as Material;
+                objectList.Add(hit.transform);
+                if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
+                    currentLerpTime = 0f;
+                    moveTarget = hit.transform.gameObject;
                     pull = true;
                     startPos = hit.transform;
                 }
@@ -59,12 +74,18 @@ public class Telekinesis : MonoBehaviour {
         if(holding)
         {
             moveTarget.transform.position = cam.position + cam.forward * 3;
-            if(Input.GetKeyDown(KeyCode.Mouse1))
+            if(Input.GetKeyDown(KeyCode.Mouse0))
             {
                 holding = false;
                 moveTarget.transform.position = cam.position + cam.forward * 3 + Vector3.up * 1;
             }
 
+            if(Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                holding = false;
+                moveTarget.GetComponent<Rigidbody>().AddForce((cam.forward + Vector3.up).normalized * 2500);
+            }
+            
             if (moveTarget.GetComponent<TelikineticObject>().isColliding)
             {
                 holding = false;
