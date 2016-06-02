@@ -44,18 +44,35 @@ public class Telekinesis : MonoBehaviour {
         }
         objectList.Clear();
 
-        if (Physics.SphereCast(cam.position - cam.forward, 3, cam.forward, out hit, 20) && !pull && !holding)
+        if (Physics.SphereCast(cam.position - cam.forward * 2, 3, cam.forward, out hit, 20) && !pull && !holding)
         {
             if (hit.transform.gameObject.GetComponent("TelikineticObject"))
             {
                 hit.transform.GetComponent<Renderer>().material = Resources.Load("outlineMat", typeof(Material)) as Material;
                 objectList.Add(hit.transform);
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                moveTarget = hit.transform.gameObject;
+                
+                if (moveTarget.GetComponent<TelikineticObject>().isPlatform)
                 {
-                    currentLerpTime = 0f;
-                    moveTarget = hit.transform.gameObject;
-                    pull = true;
-                    startPos = hit.transform;
+                    if (Input.GetKey(KeyCode.Mouse0))
+                    {
+                        moveTarget.transform.position = moveTarget.transform.position - new Vector3(0, 0, 0.1f);
+                    }
+
+                    else if (Input.GetKey(KeyCode.Mouse1))
+                    {
+                        moveTarget.transform.position = moveTarget.transform.position + new Vector3(0, 0, 0.1f);
+                    }
+                }
+             
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        currentLerpTime = 0f;
+                        pull = true;
+                        startPos = hit.transform;
+                    }
                 }
             }
         }
@@ -79,8 +96,8 @@ public class Telekinesis : MonoBehaviour {
                 holding = false;
                 moveTarget.transform.position = cam.position + cam.forward * 3 + Vector3.up * 1;
             }
-
-            if(Input.GetKeyDown(KeyCode.Mouse1))
+            Debug.Log((cam.forward + Vector3.up).normalized);
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 holding = false;
                 moveTarget.GetComponent<Rigidbody>().AddForce((cam.forward + Vector3.up).normalized * 2500);
