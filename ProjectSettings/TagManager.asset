@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Platform
+  - Arrow
+  - Hook
+  - FadedPlatform
+  - ZoneIn
+  - Key
   layers:
   - Default
   - TransparentFX

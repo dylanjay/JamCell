@@ -7,19 +7,23 @@ public class Telekinesis : MonoBehaviour {
     float lerpTime;
     float currentLerpTime;
     bool pull;
+    bool movePlat;
     GameObject moveTarget;
     float perc;
     Transform startPos;
     bool holding;
     List<Transform> objectList;
     Material diffuse;
+    GameObject player;
 
     // Use this for initialization
 	void Start () {
+        player = GameObject.Find("Player");
         lerpTime = 1f;
         currentLerpTime = 0f;
         pull = false;
         holding = false;
+        movePlat = false;
         objectList = new List<Transform>();
 
         GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -35,16 +39,19 @@ public class Telekinesis : MonoBehaviour {
       
         if (currentLerpTime <= lerpTime)
         {
-            currentLerpTime += Time.deltaTime;
+            currentLerpTime += Time.fixedDeltaTime;
         }
         
         for(int i = 0; i < objectList.Count; i++)
         {
-            objectList[i].GetComponent<Renderer>().material = diffuse;
+            if (!movePlat)
+            {
+                objectList[i].GetComponent<Renderer>().material = diffuse;
+            }
         }
         objectList.Clear();
 
-        if (Physics.SphereCast(cam.position - cam.forward * 2, 3, cam.forward, out hit, 20) && !pull && !holding)
+        if (Physics.SphereCast(cam.position - cam.forward * 1, 1, cam.forward, out hit, 20) && !pull && !holding && !movePlat)
         {
             if (hit.transform.gameObject.GetComponent("TelikineticObject"))
             {
@@ -56,12 +63,8 @@ public class Telekinesis : MonoBehaviour {
                 {
                     if (Input.GetKey(KeyCode.Mouse0))
                     {
-                        moveTarget.transform.position = moveTarget.transform.position - new Vector3(0, 0, 0.1f);
-                    }
-
-                    else if (Input.GetKey(KeyCode.Mouse1))
-                    {
-                        moveTarget.transform.position = moveTarget.transform.position + new Vector3(0, 0, 0.1f);
+                        movePlat = true;
+                        player.GetComponent<CharacterMotor>().enabled = false;
                     }
                 }
              
@@ -74,6 +77,36 @@ public class Telekinesis : MonoBehaviour {
                         startPos = hit.transform;
                     }
                 }
+            }
+        }
+
+        if(movePlat)
+        {
+            if(!Input.GetKey(KeyCode.Mouse0))
+            {
+                player.GetComponent<CharacterMotor>().enabled = true;
+                movePlat = false;
+            }
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                player.GetComponent<CharacterMotor>().enabled = false;
+                moveTarget.transform.position = moveTarget.transform.position - new Vector3(0, 0, 0.1f);
+            }
+
+            else if (Input.GetKey(KeyCode.S))
+            {
+                moveTarget.transform.position = moveTarget.transform.position + new Vector3(0, 0, 0.1f);
+            }
+
+            else if (Input.GetKey(KeyCode.A))
+            {
+                moveTarget.transform.position = moveTarget.transform.position + new Vector3(0.1f, 0, 0);
+            }
+
+            else if (Input.GetKey(KeyCode.D))
+            {
+                moveTarget.transform.position = moveTarget.transform.position - new Vector3(0.1f, 0, 0);
             }
         }
 
@@ -96,7 +129,6 @@ public class Telekinesis : MonoBehaviour {
                 holding = false;
                 moveTarget.transform.position = cam.position + cam.forward * 3 + Vector3.up * 1;
             }
-            Debug.Log((cam.forward + Vector3.up).normalized);
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 holding = false;
