@@ -18,7 +18,7 @@ public class TelikineticObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log(isColliding);
+
 	}
 
     void OnCollisionEnter(Collision other)

@@ -37,7 +37,7 @@ public class KillOnHit : MonoBehaviour {
         if (death)
         {
             deathTime -= Time.fixedDeltaTime;
-            player.transform.GetChild(1).transform.position = Vector3.Lerp(startPos, startPos - new Vector3(0, 1.25f, 0), currentLerpTime / lerpTime);
+            player.transform.GetChild(1).transform.position = Vector3.Lerp(startPos, startPos - new Vector3(0, 1.0f, 0), currentLerpTime / lerpTime);
         }
         
         if (deathTime <= 0.0f && Input.GetKey(KeyCode.Mouse0))
@@ -46,6 +46,7 @@ public class KillOnHit : MonoBehaviour {
             player.transform.GetChild(1).transform.position += camDiff;
             player.transform.position = player.GetComponent<Respawn>().respawn.position;
             death = false;
+            player.transform.GetChild(1).GetComponent<SlowTime>().death = false;
             deathTime = 3.0f;
             player.GetComponent<CharacterMotor>().enabled = true;
             player.GetComponent<CharacterMotor>().canControl = true;
@@ -73,9 +74,17 @@ public class KillOnHit : MonoBehaviour {
         if (other.gameObject == player.gameObject)
         {
             player.GetComponent<CharacterMotor>().enabled = false;
-            death = true;
-            startPos = player.transform.GetChild(1).transform.position;
-            currentLerpTime = 0f;
+            player.transform.GetChild(1).GetComponent<SlowTime>().death = true;
+            if (!death)
+            {
+                startPos = player.transform.GetChild(1).transform.position;
+                currentLerpTime = 0f;
+            }
+            if (!player.GetComponent<Respawn>().death)
+            {
+                death = true;
+            }
+            player.GetComponent<Respawn>().death = true;
         }
     }
 }

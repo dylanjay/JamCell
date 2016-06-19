@@ -3,25 +3,33 @@ using System.Collections;
 
 public class ArrowMove : MonoBehaviour {
 
-    float speed;
+    public float speed;
     public Vector3 dir;
+    Vector3 start;
+    public bool on;
 
 	// Use this for initialization
 	void Start () {
         speed = 5.0f;
-        //forward = new Vector3(this.transform.forward.z, this.transform.forward.y, this.transform.forward.x);
+        start = this.transform.position;
+        on = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        this.transform.position += speed * dir * Time.deltaTime;
+        if (on)
+        {
+            this.transform.position += speed * dir * Time.deltaTime;
+        }
 	}
 
     void OnTriggerEnter(Collider other)
     {
         if(other.name == "ArrowWall")
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            on = false;
+            this.transform.position = start;
         }
     }
 }
