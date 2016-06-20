@@ -64,7 +64,7 @@ public class Telekinesis : MonoBehaviour {
                     if (Input.GetKey(KeyCode.Mouse0))
                     {
                         movePlat = true;
-                        player.GetComponent<CharacterMotor>().enabled = false;
+                        player.GetComponent<CharacterMotor>().canControl = false;
                     }
                 }
              
@@ -84,27 +84,26 @@ public class Telekinesis : MonoBehaviour {
         {
             if(!Input.GetKey(KeyCode.Mouse0))
             {
-                player.GetComponent<CharacterMotor>().enabled = true;
+                player.GetComponent<CharacterMotor>().canControl = true;
                 movePlat = false;
             }
 
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W) && !moveTarget.GetComponent<TelikineticObject>().northWall)
             {
-                player.GetComponent<CharacterMotor>().enabled = false;
                 moveTarget.transform.position = moveTarget.transform.position - new Vector3(0, 0, 0.1f);
             }
 
-            else if (Input.GetKey(KeyCode.S))
+            else if (Input.GetKey(KeyCode.S) && !moveTarget.GetComponent<TelikineticObject>().southWall)
             {
                 moveTarget.transform.position = moveTarget.transform.position + new Vector3(0, 0, 0.1f);
             }
 
-            else if (Input.GetKey(KeyCode.A))
+            else if (Input.GetKey(KeyCode.A) && !moveTarget.GetComponent<TelikineticObject>().westWall)
             {
                 moveTarget.transform.position = moveTarget.transform.position + new Vector3(0.1f, 0, 0);
             }
 
-            else if (Input.GetKey(KeyCode.D))
+            else if (Input.GetKey(KeyCode.D) && !moveTarget.GetComponent<TelikineticObject>().eastWall)
             {
                 moveTarget.transform.position = moveTarget.transform.position - new Vector3(0.1f, 0, 0);
             }

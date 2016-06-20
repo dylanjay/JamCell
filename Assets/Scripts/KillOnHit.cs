@@ -29,6 +29,36 @@ public class KillOnHit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(Input.GetKey(KeyCode.F1))
+        {
+            Debug.Log("here");
+            player.transform.GetChild(1).transform.position = player.transform.position;
+            player.transform.GetChild(1).transform.position += camDiff;
+            player.transform.position = player.GetComponent<Respawn>().respawn.position;
+            death = false;
+            player.transform.GetChild(1).GetComponent<SlowTime>().death = false;
+            player.GetComponent<Respawn>().death = false;
+            deathTime = 3.0f;
+            player.GetComponent<CharacterMotor>().enabled = true;
+            player.GetComponent<CharacterMotor>().canControl = true;
+            player.GetComponent<Respawn>().hit = false;
+
+            foreach (GameObject plat in plats)
+            {
+                plat.SetActive(true);
+                if (plat.GetComponent<TransparentPlatform>() != null)
+                {
+                    plat.GetComponent<TransparentPlatform>().faded = false;
+                }
+            }
+
+            foreach (GameObject hook in hooks)
+            {
+                hook.SetActive(true);
+            }
+            lowerFloor.SetActive(true);
+        }
+
         if (currentLerpTime <= lerpTime)
         {
             currentLerpTime += Time.fixedDeltaTime;
@@ -47,6 +77,7 @@ public class KillOnHit : MonoBehaviour {
             player.transform.position = player.GetComponent<Respawn>().respawn.position;
             death = false;
             player.transform.GetChild(1).GetComponent<SlowTime>().death = false;
+            player.GetComponent<Respawn>().death = false;
             deathTime = 3.0f;
             player.GetComponent<CharacterMotor>().enabled = true;
             player.GetComponent<CharacterMotor>().canControl = true;

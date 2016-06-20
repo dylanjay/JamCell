@@ -10,23 +10,29 @@ public class Respawn : MonoBehaviour {
     GameObject redKey;
     GameObject[] arrows;
     //GameObject blueKey;
-    //GameObject greenKey;
+    GameObject greenKey;
+    //BoxCollider timeEnd;
 
     // Use this for initialization
     void Start () {
+        respawn = this.transform;
         hit = false;
         upperFloor = GameObject.FindGameObjectWithTag("ZoneIn");
+        //timeEnd = GameObject.Find("Time4").transform.GetChild(3).GetComponent<BoxCollider>();
+        //timeEnd.isTrigger = false;
         upperFloor.SetActive(false);
         redKey = GameObject.Find("RedKey");
         redKey.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
         redKey.GetComponent<Renderer>().enabled = false;
+        greenKey = GameObject.Find("GreenKey");
+        greenKey.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+        greenKey.GetComponent<Renderer>().enabled = false;
         arrows = GameObject.FindGameObjectsWithTag("ArrowShooter");
         death = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
     void OnTriggerEnter(Collider other)
@@ -42,6 +48,13 @@ public class Respawn : MonoBehaviour {
             upperFloor.SetActive(true);
             redKey.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
             redKey.GetComponent<Renderer>().enabled = true;
+        }
+
+        if(other.name == "endTimeCollide")
+        {
+            greenKey.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
+            greenKey.GetComponent<Renderer>().enabled = true;
+            //timeEnd.isTrigger = true;
         }
 
         /*if(other.name == "ArrowWall")
@@ -60,7 +73,7 @@ public class Respawn : MonoBehaviour {
             }
         }
 
-        if(other.name == "Time2Start" || other.name == "TimeStart")
+        if(other.name == "Time2Start" || other.name == "TimeStart" || other.name == "Time3Start" || other.name == "start")
         {
             this.transform.Rotate(new Vector3(0, 180, 0));
         }

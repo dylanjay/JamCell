@@ -11,6 +11,11 @@ TagManager:
   - ZoneIn
   - Key
   - ArrowShooter
+  - SouthWall
+  - NorthWall
+  - EastWall
+  - WestWall
+  - WallButton
   layers:
   - Default
   - TransparentFX

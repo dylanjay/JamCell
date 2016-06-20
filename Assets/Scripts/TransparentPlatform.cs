@@ -8,6 +8,10 @@ public class TransparentPlatform : MonoBehaviour {
     float fadePerSec;
     public bool faded;
     GameObject nextHook;
+    public bool moving;
+    bool dir;
+    public float speed;
+    public Vector3 axis;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +21,7 @@ public class TransparentPlatform : MonoBehaviour {
         fadePerSec = 0.3f;
         nextHook = GameObject.Find("NextHook");
         nextHook.GetComponent<Renderer>().enabled = false;
+        dir = false;
     }
 	
 	// Update is called once per frame
@@ -36,6 +41,19 @@ public class TransparentPlatform : MonoBehaviour {
             }
         }
 
+        if(moving)
+        {
+            if (dir)
+            {
+                transform.position += axis * speed * Time.deltaTime;
+            }
+            else
+            {
+                transform.position -= axis * speed * Time.deltaTime;
+            }
+            this.transform.parent.GetChild(0).transform.position = this.transform.position;
+        }
+
 	}
 
     void OnTriggerEnter(Collider other)
@@ -49,6 +67,13 @@ public class TransparentPlatform : MonoBehaviour {
         {
             GameObject.Find("LowerFloor").SetActive(false);
             nextHook.GetComponent<Renderer>().enabled = true;
+        }
+
+        if(other.name == "WallRight" || other.name == "WallLeft" || other.name == "Floor" || other.name == "Ceiling" || other.name == "endCube" || other.name == "endPlatform")
+        {
+            //if(other.name == "endCube")
+            //Debug.Log(other.name);
+            dir = !dir;
         }
     }
 }

@@ -6,6 +6,7 @@ public class KeyZone : MonoBehaviour {
     GameObject door;
     GameObject player;
     GameObject hole;
+    GameObject blueDoor;
 
 	// Use this for initialization
 	void Start () {
@@ -18,12 +19,12 @@ public class KeyZone : MonoBehaviour {
                 break;
 
             case "BlueKey":
-                door = GameObject.Find("Grapple5");
+                door = GameObject.Find("Tele5");
                 hole = GameObject.Find("BlueHole");
                 break;
 
             case "GreenKey":
-                door = GameObject.Find("Grapple5");
+                door = GameObject.Find("Time4");
                 hole = GameObject.Find("GreenHole");
                 break;
         }
@@ -39,7 +40,21 @@ public class KeyZone : MonoBehaviour {
     {
         if(other.name == player.name)
         {
-            hole.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+            switch(this.name)
+            {
+                case "RedKey":
+                    hole.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+                    break;
+
+                case "BlueKey":
+                    hole.GetComponent<Renderer>().material.color = new Color(0, 0, 255);
+                    this.GetComponent<Renderer>().enabled = false;
+                    break;
+
+                case "GreenKey":
+                    hole.GetComponent<Renderer>().material.color = new Color(0, 255, 0);
+                    break;
+            }
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.gameObject.SetActive(false);
             door.SetActive(true);

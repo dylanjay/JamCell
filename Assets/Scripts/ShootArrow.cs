@@ -25,9 +25,15 @@ public class ShootArrow : MonoBehaviour {
             if(this.transform.parent.transform.parent.name =="ShooterArray")
             {
                 arrows[i].AddComponent<KillOnHit>();
+                arrows[i].transform.GetChild(1).GetComponent<Renderer>().material = Resources.Load("green") as Material;
+                arrows[i].transform.GetChild(2).GetComponent<Renderer>().material = Resources.Load("green") as Material;
             }
         }
         arrowCount = 0;
+        if (this.transform.parent.transform.parent.name == "ShooterArray")
+        {
+            this.GetComponent<Renderer>().material = Resources.Load("green") as Material;
+        }
     }
 	// Update is called once per frame
 	void Update () {

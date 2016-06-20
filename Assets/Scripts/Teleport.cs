@@ -10,8 +10,8 @@ public class Teleport : MonoBehaviour {
     // Use this for initialization
     void Start () {
         redDoor = GameObject.Find("Grapple1");
-        blueDoor = GameObject.Find("Time1");
-        greenDoor = GameObject.Find("Telekinesis1");
+        greenDoor = GameObject.Find("Time1");
+        blueDoor = GameObject.Find("Telekinesis1");
     }
 	
 	// Update is called once per frame
@@ -50,8 +50,21 @@ public class Teleport : MonoBehaviour {
                     plat.GetComponent<TransparentPlatform>().lerp = true;
                     break;
 
+                case "Time3Start":
+                    GameObject plat2 = GameObject.Find("DemoPlat2");
+                    plat2.GetComponent<TransparentPlatform>().lerp = true;
+                    break;
+
                 case "RedEnd":
                     redDoor.SetActive(false);
+                    break;
+
+                case "GreenEnd":
+                    greenDoor.SetActive(false);
+                    break;
+
+                case "BlueEnd":
+                    blueDoor.SetActive(false);
                     break;
             }
         }
