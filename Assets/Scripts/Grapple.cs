@@ -73,7 +73,7 @@ public class Grapple : MonoBehaviour {
             if (hold)
             {
                 Vector3 offset = target - player.transform.position;
-                if (offset.magnitude > 1.0f)
+                if (offset.magnitude > 1.5f)
                 {
                     player.transform.position = Vector3.MoveTowards(player.transform.position, target, speed * Time.fixedDeltaTime);
                 }

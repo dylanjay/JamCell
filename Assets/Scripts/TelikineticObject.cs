@@ -12,6 +12,7 @@ public class TelikineticObject : MonoBehaviour {
     bool otherTele;
     GameObject tele;
     Vector3 diff;
+    Vector3 start;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +24,7 @@ public class TelikineticObject : MonoBehaviour {
         }
         southWall = westWall = northWall = eastWall = false;
         otherTele = false;
+        start = this.transform.position;
 	}
 	
 	// Update is called once per frame
@@ -30,6 +32,11 @@ public class TelikineticObject : MonoBehaviour {
         if(otherTele)
         {
             tele.transform.position = this.transform.position + diff;
+        }
+
+        if(Input.GetKey(KeyCode.F1))
+        {
+            this.transform.position = start;
         }
 	}
 

@@ -8,11 +8,15 @@ public class ButtonCheck : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        door.SetActive(false);
-        if(this.name == "TeleButtons")
+        //door.SetActive(false);
+        if (this.name == "TeleButtons")
         {
             blueKey = GameObject.Find("BlueKey");
-            blueKey.SetActive(false);
+            //blueKey.SetActive(false);
+        }
+        else
+        {
+            door.SetActive(false);
         }
 	}
 	
@@ -38,7 +42,7 @@ public class ButtonCheck : MonoBehaviour {
             }
             else
             {
-                door.SetActive(false);
+                    door.SetActive(false);
             }
         }
 	}

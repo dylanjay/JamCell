@@ -19,7 +19,18 @@ public class Button : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        if(Input.GetKey(KeyCode.F1))
+        {
+            if(this.gameObject.tag == "WallButton")
+            {
+                this.GetComponent<Renderer>().enabled = true;
+                pressed = false;
+                if (this.name == "TriggerCube")
+                {
+                    cube.SetActive(true);
+                }
+            }
+        }
 	}
 
     void OnTriggerEnter(Collider other)

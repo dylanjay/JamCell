@@ -58,7 +58,10 @@ public class ShootArrow : MonoBehaviour {
             }
             else
             {
-                this.transform.parent.transform.parent.GetComponent<RandArrow>().go = true;
+                if (this.transform.parent.transform.parent.name == "ShooterArray")
+                {
+                    this.transform.parent.transform.parent.GetComponent<RandArrow>().go = true;
+                }
             }
         }
 

@@ -31,7 +31,6 @@ public class KillOnHit : MonoBehaviour {
 	void Update () {
         if(Input.GetKey(KeyCode.F1))
         {
-            Debug.Log("here");
             player.transform.GetChild(1).transform.position = player.transform.position;
             player.transform.GetChild(1).transform.position += camDiff;
             player.transform.position = player.GetComponent<Respawn>().respawn.position;

@@ -33,7 +33,14 @@ public class Respawn : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	}
+        if (Input.GetKey(KeyCode.F1))
+        {
+            foreach (GameObject arrow in arrows)
+            {
+                arrow.GetComponent<ShootArrow>().on = true;
+            }
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     { 
@@ -73,9 +80,14 @@ public class Respawn : MonoBehaviour {
             }
         }
 
-        if(other.name == "Time2Start" || other.name == "TimeStart" || other.name == "Time3Start" || other.name == "start")
+        if(other.name == "Time2Start")
         {
             this.transform.Rotate(new Vector3(0, 180, 0));
+        }
+
+        if(other.name == "TeleStart")
+        {
+            this.transform.Rotate(new Vector3(0, 90, 0));
         }
     }
 }
