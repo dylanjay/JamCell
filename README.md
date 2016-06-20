@@ -10,3 +10,4 @@ Dylan De Los Santos
 3. Left Click - interact
 4. Right Click - interact
 5. SpaceBar - jump
+6. F1 - reset
